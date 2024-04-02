@@ -1,0 +1,18 @@
+Address	Value	Code
+		      ORG 100                  / Multiplication by addition
+500	110C	    Load      B          / Load the multiplier into AC
+501	210E	    Store     Ctr        / Store the number of loop iterations in loop control variable
+502	110D	Loop, Load    Prod       / Load the product into AC
+503	310B	    Add       A          / Add the multiplicand
+504	210D	    Store     Prod       / Store the new product
+505	110E	    Load      Ctr        / Load the loop control variable
+506	310F	    Add       Neg1       / Decrement the loop control variable by one
+507	210E	    Store     Ctr        / Store the new value of the loop control variable
+508	8400	    Skipcond  400        / If control variable = 0, skip next instruction to terminate the loop
+509	9102	    Jump      Loop       / Otherwise, go to Loop
+50A	7000	    Halt                 / Terminate program
+50B	0005	A,    Dec     5          / The multiplicand
+50C	0007	B,    Dec     7          / The multiplier
+50D	0000	Prod, Dec     0          / The product
+50E	0000	Ctr,  Hex     0          / The loop control variable
+50F	FFFF	Neg1, Dec     -1         / Used to increment and decrement by 1
