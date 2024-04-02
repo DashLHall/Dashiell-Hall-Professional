@@ -1,0 +1,67 @@
+/ Code Section
+      100       Load    Matrix1     / Load address of Matrix1 into AC
+      110       Store   1000        / Store address of Matrix1 in memory
+      120       Load    Matrix2     / Load address of Matrix2 into AC
+      130       Store   1001        / Store address of Matrix2 in memory
+      140       Load    Result      / Load address of Result into AC
+      150       Store   1002        / Store address of Result in memory
+
+      160       Load    Counter1    / Load outer loop counter
+      170       Store   1003        / Store outer loop counter in memory
+
+      180       Load    Counter2    / Load inner loop counter
+      190       Store   1004        / Store inner loop counter in memory
+
+outer_loop:
+      200       Load    1003        / Load outer loop counter
+      210       Add     Neg1        / Decrement outer loop counter
+      220       Store   1003        / Store updated outer loop counter
+
+      230       Skipcond 400        / Check if outer loop counter = 0
+      240       Jump    700         / If counter = 0, exit the program
+
+      250       Load    1001        / Load address of Matrix2
+      260       Load    Counter2    / Load inner loop counter
+      270       Store   1005        / Store inner loop counter in memory
+
+inner_loop:
+      280       Load    1005        / Load inner loop counter
+      290       Add     Neg1        / Decrement inner loop counter
+      300       Store   1005        / Store updated inner loop counter
+
+      310       Skipcond 400        / Check if inner loop counter = 0
+      320       Jump    600         / If counter = 0, go to outer loop
+
+      330       Load    1000        / Load address of Matrix1
+      340       Load    ElemCount   / Load element-wise multiplication counter
+      350       Store   1006        / Store element-wise multiplication counter in memory
+
+multiply_elements:
+      360       Load    1000        / Load address of Matrix1
+      370       Add     1006        / Add element-wise multiplication counter
+      380       Load    AC          / Load the element from Matrix1
+
+      390       Load    1001        / Load address of Matrix2
+      400       Add     1005        / Add inner loop counter
+      410       Load    AC2         / Load the element from Matrix2
+
+      420       Mul                 / Multiply the elements
+      430       Add     1002        / Add address of Result
+      440       Add     ElemCount   / Add element-wise multiplication counter
+      450       Load    AC          / Load the element from Result
+
+      460       Add                 / Add the multiplication result to the element in Result
+      470       Store   AC          / Store the updated element in Result
+
+      480       Load    ElemCount   / Load element-wise multiplication counter
+      490       Add     0001        / Increment element-wise multiplication counter
+      4A0       Store   ElemCount   / Store updated element-wise multiplication counter
+
+      4B0       Jump    multiply_elements  / Repeat multiplication for next element
+
+      600       Jump    inner_loop  / Repeat inner loop for next element in the row
+
+      700       Halt                / End of program
+
+      / Constants
+      800       Dec     -1          / Constant to decrement counters
