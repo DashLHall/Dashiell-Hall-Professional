@@ -1,0 +1,66 @@
+500       110C  Load    Matrix1     / Load address of Matrix1 into AC
+501       210E  Store   1000        / Store address of Matrix1 in memory
+502       110C  Load    Matrix2     / Load address of Matrix2 into AC
+503       210E  Store   1001        / Store address of Matrix2 in memory
+504       110C  Load    Result      / Load address of Result into AC
+505       210E  Store   1002        / Store address of Result in memory
+
+506       110C  Load    Counter1    / Load outer loop counter
+507       210E  Store   1003        / Store outer loop counter in memory
+
+508       110C  Load    Counter2    / Load inner loop counter
+509       210E  Store   1004        / Store inner loop counter in memory
+
+outer_loop:
+50A       110C  Load    1003        / Load outer loop counter
+50B     310B  Add     Neg1        / Decrement outer loop counter
+50C       210D  Store   1003        / Store updated outer loop counter
+
+50D       5100  Skipcond 400        / Check if outer loop counter = 0
+50E       6902  Jump    700         / If counter = 0, exit the program
+
+50F       110C  Load    1001        / Load address of Matrix2
+510       110C  Load    Counter2    / Load inner loop counter
+511       210D  Store   1005        / Store inner loop counter in memory
+
+inner_loop:
+512       110C  Load    1005        / Load inner loop counter
+513       310B  Add     Neg1        / Decrement inner loop counter
+514       210D  Store   1005        / Store updated inner loop counter
+
+515       5100  Skipcond 400        / Check if inner loop counter = 0
+516       6902  Jump    600         / If counter = 0, go to outer loop
+
+517       110C  Load    1000        / Load address of Matrix1
+518       110C  Load    ElemCount   / Load element-wise multiplication counter
+519       210D  Store   1006        / Store element-wise multiplication counter in memory
+
+multiply_elements:
+51A       110C  Load    1000        / Load address of Matrix1
+51B       310B  Add     1006        / Add element-wise multiplication counter
+51C       110C  Load    AC          / Load the element from Matrix1
+
+51D       110C  Load    1001        / Load address of Matrix2
+51E       310B  Add     1005        / Add inner loop counter
+51F       110C  Load    AC2         / Load the element from Matrix2
+
+520       810F  Mul                 / Multiply the elements
+521       310B  Add     1002        / Add address of Result
+522       310B  Add     ElemCount   / Add element-wise multiplication counter
+523       110C  Load    AC          / Load the element from Result
+
+524       310B  Add                 / Add the multiplication result to the element in Result
+525       210D  Store   AC          / Store the updated element in Result
+
+526       110C  Load    ElemCount   / Load element-wise multiplication counter
+527       310B  Add     0001        / Increment element-wise multiplication counter
+528       210D  Store   ElemCount   / Store updated element-wise multiplication counter
+
+529       6902  Jump    multiply_elements  / Repeat multiplication for next element
+
+52A       6902  Jump    inner_loop  / Repeat inner loop for next element in the row
+
+52B       7000  Halt                / End of program
+
+/ Constants
+52C       310B  Add     -1          / Decrement counters
