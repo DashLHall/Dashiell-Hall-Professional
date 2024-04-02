@@ -1,0 +1,22 @@
+      ORG 500                  / Start address
+
+500   110A      Load    FIB1      / Load the first Fibonacci number into AC
+501   210C      Store   FIB       / Store it as the current Fibonacci number
+502   110B      Load    FIB2      / Load the second Fibonacci number into AC
+503   310C      Add     FIB       / Add the current Fibonacci number
+504   210B      Store   FIB       / Store the new Fibonacci number
+505   110A      Load    FIB1      / Load the second Fibonacci number into AC
+506   310D      Add     Neg1      / Decrement the loop control variable
+507   210A      Store   FIB1      / Store the new value of the second Fibonacci number
+508   110B      Load    FIB2      / Load the current Fibonacci number into AC
+509   310E      Add     Neg1      / Decrement the loop control variable
+50A   210B      Store   FIB2      / Store the new value of the current Fibonacci number
+50B   5100      Skipcond 400      / If the loop control variable = 0, skip next instruction to terminate the loop
+50C   6902      Jump    Loop      / Otherwise, go to Loop
+50D   7000      Halt              / Terminate program
+
+      / Data Section
+50E   000B      FIB,  Dec 11      / The 11th Fibonacci number (initially set to 0)
+50F   0000      FIB1, Dec 0       / The (n-2)th Fibonacci number
+510   0001      FIB2, Dec 1       / The (n-1)th Fibonacci number
+511   FFFF      Neg1, Dec -1      / Used to decrement the loop control variable by 1
